@@ -1,7 +1,12 @@
 package telas;
 
+import controle.TelaCadLivroControle;
+import controle.TelaCadastroFuncControle;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class TelaCadLivro {
     public static void areaCadLivro() {
@@ -41,6 +46,15 @@ public class TelaCadLivro {
         cadastrarButton.setForeground(Color.WHITE);
         cadastrarButton.setFont(new Font("Arial", Font.BOLD, 16));
         cadastrarButton.setPreferredSize(new Dimension(400, 50));
+        cadastrarButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String nome = nomeInput.getText();
+                String isbn = isbnInput.getText();
+                String result = TelaCadLivroControle.cadastraLivro(nome, isbn);
+                JOptionPane.showMessageDialog(frame, result);
+            }
+        });
+
 
         botoesPanel.add(cadastrarButton, BorderLayout.SOUTH);
 

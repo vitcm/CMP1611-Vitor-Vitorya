@@ -1,7 +1,11 @@
 package telas;
 
+import controle.TelaCadLivroControle;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class TelaTeste {
     public static void areaTeste() {
@@ -52,6 +56,15 @@ public class TelaTeste {
         cadastrarButton.setPreferredSize(new Dimension(400, 50));
 
         botoesPanel.add(cadastrarButton, BorderLayout.SOUTH);
+
+        cadastrarButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String nome = nomeInput.getText();
+                // String cpf = cpf
+                //String result = TelaCadLivroControle.cadastraLivro(nome, isbn);
+                //JOptionPane.showMessageDialog(frame, result);
+            }
+        });
 
         frame.add(camposPanel, BorderLayout.CENTER);
         frame.add(botoesPanel, BorderLayout.SOUTH);

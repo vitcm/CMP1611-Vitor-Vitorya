@@ -1,7 +1,12 @@
 package telas;
 
+import controle.TelaCadCategoriasControle;
+import controle.TelaCadIngredienteControle;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class TelaCadIngrediente {
     public static void areaCadIngred() {
@@ -35,6 +40,14 @@ public class TelaCadIngrediente {
         cadastrarButton.setPreferredSize(new Dimension(400, 50));
 
         botoesPanel.add(cadastrarButton, BorderLayout.SOUTH);
+
+        cadastrarButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String nome = nomeInput.getText();
+                String result = TelaCadIngredienteControle.cadastraIngrediente(nome);
+                JOptionPane.showMessageDialog(frame, result);
+            }
+        });
 
         frame.add(camposPanel, BorderLayout.CENTER);
         frame.add(botoesPanel, BorderLayout.SOUTH);

@@ -1,15 +1,19 @@
 package telas;
 
+import controle.TelaCadReceitaControle;
+import controle.TelaCadastroFuncControle;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.table.DefaultTableModel;
 
 public class TelaCadReceita {
     public static void areaCadReceita() {
         JFrame frame = new JFrame("CADASTRO RECEITA");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(600, 600);
+        frame.setSize(600, 800);
 
         //criação da grid para distribuição dos componentes da tela
         JPanel panel = new JPanel(new GridBagLayout());
@@ -80,11 +84,7 @@ public class TelaCadReceita {
 
         // Botão Adição
         JButton adicionarButton = new JButton("+");
-        adicionarButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Lógica para adicionar a linha na tabela
-            }
-        });
+
 
         gbc.gridx = 0;
         gbc.gridy = 5;
@@ -119,13 +119,27 @@ public class TelaCadReceita {
         // Tabela de Ingredientes
         String[] colunas = {"Ingrediente", "Quantidade", "Medida"};
         Object[][] dados = {}; // os dados serão inseridos DINAMICAMENTE
-        JTable tabelaIngredientes = new JTable(dados, colunas);
+        DefaultTableModel model = new DefaultTableModel(dados, colunas);
+        JTable tabelaIngredientes = new JTable(model);
         tabelaIngredientes.setFillsViewportHeight(true);
 
         gbc.gridx = 0;
         gbc.gridy = 7;
         gbc.gridwidth = 7;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
         panel.add(new JScrollPane(tabelaIngredientes), gbc);
+
+        adicionarButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String ingrediente = (String) ingredienteDropdown.getSelectedItem();
+                String quantidade = quantidadeInput.getText();
+                String medida = (String) medidaDropdown.getSelectedItem();
+                DefaultTableModel model = (DefaultTableModel) tabelaIngredientes.getModel();
+                model.addRow(new Object[]{ingrediente, quantidade, medida});
+                tabelaIngredientes.setModel(model);
+            }
+        });
 
         // Botão Cadastrar
         JButton cadastrarButton = new JButton("CADASTRAR");
@@ -137,6 +151,23 @@ public class TelaCadReceita {
         gbc.gridy = 8;
         gbc.gridwidth = 7;
         panel.add(cadastrarButton, gbc);
+
+        cadastrarButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String cpf = cpfInput.getText();
+                String nome = nomeInput.getText();
+                String data = dataInput.getText();
+                String categoria = (String) categoriaDropdown.getSelectedItem();
+                String ingrediente = (String) ingredienteDropdown.getSelectedItem();
+                String quantidade = quantidadeInput.getText();
+                String medida = (String) medidaDropdown.getSelectedItem();
+
+
+                String result = TelaCadReceitaControle.cadastraReceita(cpf, nome, data, categoria,
+                        ingrediente, quantidade, medida);
+                JOptionPane.showMessageDialog(frame, result);
+            }
+        });
 
         frame.add(panel);
         frame.setLocationRelativeTo(null);
