@@ -1,11 +1,14 @@
 package controle;
 
+import dao.daoCategoria;
+import model.Categoria;
+
 public class TelaCadCategoriasControle {
 
     public static String cadastraCategoria(String nome) {
         String resultado = "";
 
-        if(nome.isEmpty()) {
+        if (nome.isEmpty()) {
             resultado = "O nome da categoria é obrigatório";
             return resultado;
         } else {
@@ -14,15 +17,22 @@ public class TelaCadCategoriasControle {
                 return resultado;
             }
 
-            // CHAMAR AQUI A FUNÇÃO DO DAO QUE VAI SER CRIADA PARA INSERIR CATEGORIA NO DAO
-            // FAZER LÁ UM BOOLEAN PARA QUE RETORNE VERDADEIRO OU FALSO
+            Categoria novaCategoria = new Categoria();
+            novaCategoria.setDescCategoria(nome);
 
-            resultado = "Cadastro realizado com sucesso!";
+            daoCategoria categoriaDao = new daoCategoria();
+            boolean inseridoComSucesso = categoriaDao.inserir(novaCategoria);
+
+            if (inseridoComSucesso) {
+                resultado = "Cadastro realizado com sucesso!";
+            } else {
+                resultado = "Erro ao tentar cadastrar categoria. Por favor, tente novamente.";
+            }
         }
 
         return resultado;
     }
-
+    
     public static boolean validaNome(String nome) {
         return nome.matches("[a-zA-Z]+");
     }
