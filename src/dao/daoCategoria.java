@@ -9,7 +9,7 @@ import java.util.List;
 public class daoCategoria {
 
     public boolean inserir(Categoria categoria) {
-        String sql = "INSERT INTO categorias (codCategoria, descCategoria) VALUES (?, ?)";
+        String sql = "INSERT INTO categoria (codCategoria, descCategoria) VALUES (?, ?)";
 
         try (Connection conexao = ConexaoBD.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
@@ -27,7 +27,7 @@ public class daoCategoria {
 
     public List<Categoria> listarTodos() {
         List<Categoria> categorias = new ArrayList<>();
-        String sql = "SELECT * FROM categorias";
+        String sql = "SELECT * FROM categoria";
 
         try (Connection conexao = ConexaoBD.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql);
@@ -48,7 +48,7 @@ public class daoCategoria {
     }
 
     public void atualizar(Categoria categoria) {
-        String sql = "UPDATE categorias SET descCategoria = ? WHERE codCategoria = ?";
+        String sql = "UPDATE categoria SET descCategoria = ? WHERE codCategoria = ?";
 
         try (Connection conexao = ConexaoBD.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
@@ -64,7 +64,7 @@ public class daoCategoria {
     }
 
     public void excluir(int codCategoria) {
-        String sql = "DELETE FROM categorias WHERE codCategoria = ?";
+        String sql = "DELETE FROM categoria WHERE codCategoria = ?";
 
         try (Connection conexao = ConexaoBD.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
