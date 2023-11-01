@@ -9,21 +9,22 @@ import java.util.List;
 
 public class daoIngrediente {
 
-    public void inserir(Ingrediente ingrediente) {
-        String sql = "INSERT INTO ingredientes (codIngrediente, nomeIngrediente, descricao) VALUES (?, ?, ?)";
+    public boolean inserir(Ingrediente ingrediente) {
+        String sql = "INSERT INTO ingredientes (nome_ingrediente, descricao) VALUES ( ?, ?)";
 
         try (Connection conexao = ConexaoBD.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
-            stmt.setInt(1, ingrediente.getCodIngrediente());
-            stmt.setString(2, ingrediente.getNomeIngrediente());
-            stmt.setString(3, ingrediente.getDescricao());
+            stmt.setString(1, ingrediente.getNomeIngrediente());
+            stmt.setString(2, ingrediente.getDescricao());
 
             stmt.executeUpdate();
+            return true;
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public List<Ingrediente> listarTodos() {
@@ -50,7 +51,7 @@ public class daoIngrediente {
     }
 
     public void atualizar(Ingrediente ingrediente) {
-        String sql = "UPDATE ingredientes SET nomeIngrediente = ?, descricao = ? WHERE codIngrediente = ?";
+        String sql = "UPDATE ingredientes SET nome_ingrediente = ?, descricao = ? WHERE cod_ingrediente = ?";
 
         try (Connection conexao = ConexaoBD.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
@@ -67,7 +68,7 @@ public class daoIngrediente {
     }
 
     public void excluir(int codIngrediente) {
-        String sql = "DELETE FROM ingredientes WHERE codIngrediente = ?";
+        String sql = "DELETE FROM ingredientes WHERE cod_ingrediente = ?";
 
         try (Connection conexao = ConexaoBD.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {

@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConexaoBD {
 
-    private static final String URL = "jdbc:postgres://postgres:CBBaeAEdd4-E5BCcaG*1d4GAAG-16bFe@monorail.proxy.rlwy.net:11270/railway";
+    private static final String URL = "jdbc:postgresql://monorail.proxy.rlwy.net:11270/railway";
     private static final String USER = "postgres";
     private static final String PASS = "CBBaeAEdd4-E5BCcaG*1d4GAAG-16bFe";
 

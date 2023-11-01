@@ -9,15 +9,15 @@ import java.util.List;
 public class daoCategoria {
 
     public boolean inserir(Categoria categoria) {
-        String sql = "INSERT INTO categoria (codCategoria, descCategoria) VALUES (?, ?)";
+        String sql = "INSERT INTO categoria (desc_categoria) VALUES ( ?)";
 
         try (Connection conexao = ConexaoBD.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
-            stmt.setInt(1, categoria.getCodCategoria());
-            stmt.setString(2, categoria.getDescCategoria());
+            stmt.setString(1, categoria.getDescCategoria());
 
             stmt.executeUpdate();
+            return true;
 
         } catch (SQLException e) {
             e.printStackTrace();

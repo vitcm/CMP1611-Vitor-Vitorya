@@ -17,11 +17,9 @@ public class TelaCadCategoriasControle {
                 return resultado;
             }
 
-            Categoria novaCategoria = new Categoria();
-            novaCategoria.setDescCategoria(nome);
-
-            daoCategoria categoriaDao = new daoCategoria();
-            boolean inseridoComSucesso = categoriaDao.inserir(novaCategoria);
+            Categoria newCategoria = new Categoria(nome);
+            daoCategoria dao = new daoCategoria();
+            boolean inseridoComSucesso = dao.inserir(newCategoria);
 
             if (inseridoComSucesso) {
                 resultado = "Cadastro realizado com sucesso!";

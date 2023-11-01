@@ -8,8 +8,7 @@ public class Ingrediente {
 
     public Ingrediente() {}
 
-    public Ingrediente(int codIngrediente, String nomeIngrediente, String descricao) {
-        this.codIngrediente = codIngrediente;
+    public Ingrediente( String nomeIngrediente, String descricao) {
         this.nomeIngrediente = nomeIngrediente;
         this.descricao = descricao;
     }

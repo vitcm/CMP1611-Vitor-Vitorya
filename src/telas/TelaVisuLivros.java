@@ -2,9 +2,17 @@ package telas;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class TelaVisuLivros {
-    public static void abreTelaLivros() {
+
+    private List<String> listaLivros;
+
+    public TelaVisuLivros(List<String> listaLivros) {
+        this.listaLivros = listaLivros;
+    }
+
+    public void abreTelaLivros() {
         JFrame frame = new JFrame("LIVROS");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(600, 400);
@@ -15,12 +23,9 @@ public class TelaVisuLivros {
         tituloLabel.setFont(new Font("Arial",Font.BOLD, 20));
         frame.add(tituloLabel, BorderLayout.NORTH);
 
-        // Lista de livros
-        String[] livros = { // ----> PEGAR DO BD
-                "ISBN - Livro 1",
-                "ISBN - Livro 2",
-                "ISBN - Livro 3"
-        };
+        // Convertendo a lista para um array de strings
+        String[] livros = listaLivros.toArray(new String[0]);
+
         JList<String> listLivros = new JList<>(livros);
         listLivros.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listLivros.addMouseListener(new java.awt.event.MouseAdapter() {

@@ -1,11 +1,15 @@
 package principal;
 
+import dao.daoLivro;
+import model.Livro;
 import telas.*;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -88,7 +92,17 @@ public class Main {
         botaoVisuLivros.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TelaVisuLivros.abreTelaLivros();
+                daoLivro newLivro = new daoLivro();
+                List<Livro> livrosList = newLivro.listarTodos();
+
+                // Convertendo a lista de Livro para uma lista de Strings (por exemplo, títulos)
+                List<String> titulos = new ArrayList<>();
+                for (Livro livro : livrosList) {
+                    titulos.add(livro.getTitulo());
+                }
+
+                TelaVisuLivros tela = new TelaVisuLivros(titulos);
+                tela.abreTelaLivros();
             }
         });
         botoesPanel.add(botaoVisuLivros);

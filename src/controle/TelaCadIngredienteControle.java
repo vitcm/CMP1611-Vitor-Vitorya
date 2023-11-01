@@ -1,6 +1,11 @@
 package controle;
+import dao.daoIngrediente;
+import model.Ingrediente;
 
 public class TelaCadIngredienteControle {
+
+    private static daoIngrediente dao = new daoIngrediente();
+
     public static String cadastraIngrediente(String nome) {
         String resultado = "";
 
@@ -13,16 +18,23 @@ public class TelaCadIngredienteControle {
                 return resultado;
             }
 
-            // CHAMAR AQUI A FUNÇÃO DO DAO QUE VAI SER CRIADA PARA INSERIR CATEGORIA NO DAO
-            // FAZER LÁ UM BOOLEAN PARA QUE RETORNE VERDADEIRO OU FALSO
+            Ingrediente novoIngrediente = new Ingrediente(nome, "");
+            daoIngrediente dao = new daoIngrediente();
+            boolean inserido = dao.inserir(novoIngrediente);
 
-            resultado = "Cadastro realizado com sucesso!";
+
+            if (!inserido) {
+                resultado = "Erro ao realizar cadastro. Tente novamente.";
+                return resultado;
+            } else {
+                resultado = "Cadastro realizado com sucesso!";
+            }
         }
 
         return resultado;
     }
 
     public static boolean validaNome(String nome) {
-        return nome.matches("[a-zA-Z]+");
+        return nome.matches("[a-zA-Z ]+");  // Updated regex to include spaces for names with multiple words.
     }
 }

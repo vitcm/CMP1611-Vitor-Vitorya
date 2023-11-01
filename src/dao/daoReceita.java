@@ -40,13 +40,13 @@ public class daoReceita {
 
             while (rs.next()) {
                 Receita receita = new Receita();
-                receita.setCodReceita(rs.getInt("codReceita"));
-                receita.setNomeReceita(rs.getString("nomeReceita"));
-                receita.setDataInventada(Date.valueOf(rs.getDate("dataInventada").toLocalDate()));
-                receita.setCodCozinheiro(rs.getString("codCozinheiro"));
-                receita.setCodCategoria(rs.getInt("codCategoria"));
-                receita.setDescricaoPreparacao(rs.getString("descricaoPreparacao"));
-                receita.setNumPorcoes(rs.getInt("numPorcoes"));
+                receita.setCodReceita(rs.getInt("cod_receita"));
+                receita.setNomeReceita(rs.getString("nome_receita"));
+                receita.setDataInventada(Date.valueOf(rs.getDate("data_inventada").toLocalDate()));
+                receita.setCodCozinheiro(rs.getString("cod_cozinheiro"));
+                receita.setCodCategoria(rs.getInt("cod_categoria"));
+                receita.setDescricaoPreparacao(rs.getString("descricao_preparacao"));
+                receita.setNumPorcoes(rs.getInt("num_porcoes"));
                 receitas.add(receita);
             }
 

@@ -38,7 +38,7 @@ public class daoLivro {
                 Livro livro = new Livro();
                 livro.setISBN(rs.getString("ISBN"));
                 livro.setTitulo(rs.getString("titulo"));
-                livro.setCpfEditor(rs.getString("cpfEditor"));
+                livro.setCpfEditor(rs.getString("cpf_editor"));
                 livros.add(livro);
             }
 

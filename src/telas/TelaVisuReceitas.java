@@ -1,11 +1,15 @@
 package telas;
 
+import controle.TelaVisuReceitasControle;
+import model.Receita;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.List;
 
 public class TelaVisuReceitas {
+    private static TelaVisuReceitasControle controle = new TelaVisuReceitasControle();
+
     public static void abreTelaReceitas() {
         JFrame frame = new JFrame("RECEITAS");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -14,23 +18,24 @@ public class TelaVisuReceitas {
 
         // Título centralizado
         JLabel tituloLabel = new JLabel("RECEITAS", SwingConstants.CENTER);
-        tituloLabel.setFont(new Font("Arial",Font.BOLD, 20));
+        tituloLabel.setFont(new Font("Arial", Font.BOLD, 20));
         frame.add(tituloLabel, BorderLayout.NORTH);
 
         // Lista de receitas
-        String[] receitas = { // ----> PEGAR DO BD
-                "Receita 1 - Cozinheiro",
-                "Receita 2 - Cozinheiro",
-                "Receita 3 - Cozinheiro"
-        };
-        JList<String> listaReceitas = new JList<>(receitas);
+        List<Receita> receitasDoBD = controle.buscarTodasReceitas();
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        for (Receita r : receitasDoBD) {
+            listModel.addElement(r.getNomeReceita() + " - " + r.getCodCozinheiro());
+        }
+
+        JList<String> listaReceitas = new JList<>(listModel);
         listaReceitas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         listaReceitas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 JList<String> list = (JList<String>) evt.getSource();
                 if (evt.getClickCount() == 2) {
-                    //String receitaSelecionada = list.getSelectedValue();
-                    TelaReceita.areaReceita();
+                    // Pode pegar informações da receita selecionada aqui
+                    TelaReceita.areaReceita();  // Se a tela de receita detalhada precisa de algum dado, passe como parâmetro.
                 }
             }
         });

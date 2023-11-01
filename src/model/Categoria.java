@@ -7,8 +7,7 @@ public class Categoria {
 
     public Categoria() {}
 
-    public Categoria(int codCategoria, String descCategoria) {
-        this.codCategoria = codCategoria;
+    public Categoria(String descCategoria) {
         this.descCategoria = descCategoria;
     }
 
