@@ -10,13 +10,12 @@ import java.util.List;
 public class daoRestaurante {
 
     public void inserir(Restaurante restaurante) {
-        String sql = "INSERT INTO restaurante (codRest, nomeRest) VALUES (?, ?)";
+        String sql = "INSERT INTO restaurante (nome_rest) VALUES (?)";
 
         try (Connection conexao = ConexaoBD.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
-            stmt.setInt(1, restaurante.getCodRest());
-            stmt.setString(2, restaurante.getNomeRest());
+            stmt.setString(1, restaurante.getNomeRest());
 
             stmt.executeUpdate();
 
@@ -35,8 +34,8 @@ public class daoRestaurante {
 
             while (rs.next()) {
                 Restaurante restaurante = new Restaurante();
-                restaurante.setCodRest(rs.getInt("codRest"));
-                restaurante.setNomeRest(rs.getString("nomeRest"));
+                restaurante.setCodRest(rs.getInt("cod_rest"));
+                restaurante.setNomeRest(rs.getString("nome_rest"));
                 restaurantes.add(restaurante);
             }
 
