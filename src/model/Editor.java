@@ -12,7 +12,7 @@ public class Editor {
 
     public Editor() {}
 
-    public Editor(String cpf, String nome, java.util.Date dataIngresso, BigDecimal salario) {
+    public Editor(String cpf, String nome, Date dataIngresso, BigDecimal salario) {
         this.cpf = cpf;
         this.nome = nome;
         this.dataIngresso = dataIngresso;

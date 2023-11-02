@@ -9,7 +9,7 @@ import java.util.List;
 
 public class daoEditor {
 
-    public void inserir(Editor editor) {
+    public boolean inserir(Editor editor) {
         String sql = "INSERT INTO editores (cpf, nome, data_ingresso, salario) VALUES (?, ?, ?, ?)";
 
         try (Connection conexao = ConexaoBD.conectar();
@@ -21,9 +21,11 @@ public class daoEditor {
             stmt.setBigDecimal(4, editor.getSalario());
 
             stmt.executeUpdate();
+            return true;
 
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

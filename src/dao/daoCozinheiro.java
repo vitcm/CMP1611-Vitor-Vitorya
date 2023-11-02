@@ -8,7 +8,7 @@ import java.util.List;
 
 public class daoCozinheiro {
 
-    public void inserir(Cozinheiro cozinheiro) {
+    public boolean inserir(Cozinheiro cozinheiro) {
         String sql = "INSERT INTO cozinheiros (cpf, nome, data_ingresso, salario, nome_fantasia, lista_restaurantes) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conexao = ConexaoBD.conectar();
@@ -16,15 +16,16 @@ public class daoCozinheiro {
 
             stmt.setString(1, cozinheiro.getCpf());
             stmt.setString(2, cozinheiro.getNome());
-            stmt.setDate(3, java.sql.Date.valueOf(cozinheiro.getDataIngresso().toLocalDate()));
+            stmt.setDate(3, new Date(cozinheiro.getDataIngresso().getTime()));
             stmt.setBigDecimal(4, cozinheiro.getSalario());
             stmt.setString(5, cozinheiro.getNomeFantasia());
             stmt.setString(6, cozinheiro.getListaRestaurantes());
 
             stmt.executeUpdate();
-
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -61,7 +62,7 @@ public class daoCozinheiro {
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
             stmt.setString(1, cozinheiro.getNome());
-            stmt.setDate(2, java.sql.Date.valueOf(cozinheiro.getDataIngresso().toLocalDate()));
+            stmt.setDate(2, new Date(cozinheiro.getDataIngresso().getTime()));
             stmt.setBigDecimal(3, cozinheiro.getSalario());
             stmt.setString(4, cozinheiro.getNomeFantasia());
             stmt.setString(5, cozinheiro.getListaRestaurantes());

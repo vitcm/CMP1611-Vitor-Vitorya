@@ -1,6 +1,6 @@
 package model;
 
-import java.sql.Date;
+import java.util.Date;
 import java.math.BigDecimal;
 
 public class Cozinheiro {
@@ -13,13 +13,12 @@ public class Cozinheiro {
 
     public Cozinheiro() {}
 
-    public Cozinheiro(String cpf, String nome, Date dataIngresso, BigDecimal salario, String nomeFantasia, String listaRestaurantes) {
+    public Cozinheiro(String cpf, String nome, Date dataIngresso, BigDecimal salario, String nomeFantasia) {
         this.cpf = cpf;
         this.nome = nome;
         this.dataIngresso = dataIngresso;
         this.salario = salario;
         this.nomeFantasia = nomeFantasia;
-        this.listaRestaurantes = listaRestaurantes;
     }
 
     public String getCpf() {

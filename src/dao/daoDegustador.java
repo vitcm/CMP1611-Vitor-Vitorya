@@ -9,7 +9,7 @@ import java.util.List;
 
 public class daoDegustador {
 
-    public void inserir(Degustador degustador) {
+    public boolean inserir(Degustador degustador) {
         String sql = "INSERT INTO degustadores (cpf, nome, data_ingresso, salario) VALUES (?, ?, ?, ?)";
 
         try (Connection conexao = ConexaoBD.conectar();
@@ -17,13 +17,14 @@ public class daoDegustador {
 
             stmt.setString(1, degustador.getCpf());
             stmt.setString(2, degustador.getNome());
-            stmt.setDate(3, Date.valueOf(degustador.getDataIngresso().toLocalDate()));
+            stmt.setDate(3, new Date(degustador.getDataIngresso().getTime()));
             stmt.setBigDecimal(4, degustador.getSalario());
 
             stmt.executeUpdate();
-
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -58,7 +59,7 @@ public class daoDegustador {
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
             stmt.setString(1, degustador.getNome());
-            stmt.setDate(2, java.sql.Date.valueOf(degustador.getDataIngresso().toLocalDate()));
+            stmt.setDate(3, new Date(degustador.getDataIngresso().getTime()));
             stmt.setBigDecimal(3, degustador.getSalario());
             stmt.setString(4, degustador.getCpf());
 
