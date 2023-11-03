@@ -1,10 +1,19 @@
 package telas;
 
+import controle.TelaTesteControle;
+import dao.daoRestaurante;
+import model.Restaurante;
+import model.Teste;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+
 public class TelaAreaDeg {
+
+    private static DefaultListModel<String> listModel;
     public static void areaDeg() {
         JFrame frame = new JFrame("ÁREA DEGUSTADOR");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -31,15 +40,27 @@ public class TelaAreaDeg {
         });
         botoesPanel.add(botaoTeste);
 
-        // Lista de testes ---> CHAMAR UM MÉTODO QUE FAÇA O GET DO BANCO DE DADOS COM TODOS OS TESTES
-        String[] testes = {
-                "Nome receita - nota - Nome completo do degustador",
-                "Nome receita - nota - Nome completo do degustador",
-                "Nome receita - nota - Nome completo do degustador"
-        };
-        JList<String> listaReceitas = new JList<>(testes);
-        listaReceitas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        frame.add(new JScrollPane(listaReceitas), BorderLayout.SOUTH);
+        // Botão para atualizar lista de restaurantes
+        JButton botaoAtualizar = new JButton("Atualizar Lista");
+        criaButton(botaoAtualizar);
+        botaoAtualizar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                atualizarListaDeTestes();
+            }
+        });
+        botoesPanel.add(botaoAtualizar);
+
+
+        // Inicialize o modelo da lista e a JList
+        listModel = new DefaultListModel<>();
+        JList<String> listaTestes = new JList<>(listModel);
+        listaTestes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        frame.add(new JScrollPane(listaTestes), BorderLayout.SOUTH);
+
+        // Atualize a lista de testes
+        atualizarListaDeTestes();
+
 
         // insere no centro da tela
         frame.setLocationRelativeTo(null);
@@ -54,5 +75,15 @@ public class TelaAreaDeg {
         botao.setForeground(Color.WHITE);
         botao.setFont(new Font("Arial", Font.BOLD, 16));
         botao.setPreferredSize(new Dimension(400, 50));
+    }
+
+    public static void atualizarListaDeTestes() {
+        List<Teste> listaDeTestes = TelaTesteControle.listatestes();
+
+        listModel.clear(); // Limpa o modelo da lista antes de adicionar os novos elementos
+        for (Teste teste : listaDeTestes) {
+            String item = "Receita " + teste.getCodReceita()+ " - Data " + teste.getDataTeste() +" - Nota " + teste.getNota();
+            listModel.addElement(item);
+        }
     }
 }

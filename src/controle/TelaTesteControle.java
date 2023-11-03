@@ -1,56 +1,71 @@
 package controle;
 
+import dao.daoDegustador;
+import dao.daoTeste;
+import model.Degustador;
+import model.Teste;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class TelaTesteControle {
-    public static String cadastraTeste(String cpf, String nome, String nota) {
+    public static String cadastraTeste(String cpfDegust, String codReceita, String data, String nota) {
         String resultado = "";
 
-        if(nome.isEmpty() || cpf.isEmpty() || nota.isEmpty()) {
-            resultado = "Os campos cpf, nome e nota são obrigatórios.";
+        if(cpfDegust.isEmpty() || codReceita.isEmpty() || nota.isEmpty() || data.isEmpty()) {
+            resultado = "Os campos cpf, receita, data e nota são obrigatórios.";
             return resultado;
         } else {
-            if (!validaNome(nome)) {
-                resultado = "Favor inserir um nome válido";
+            if (!validaNota(nota)) {
+                resultado = "Favor inserir uma nota válida";
                 return resultado;
             }
-            String cpfvalidacao = validaCPF(cpf); //ARRUMAR A VALIDAÇÃO DO CPF
-            if(!cpfvalidacao.equals("ok")){
-                resultado = cpfvalidacao;
-            }
-            if (!validaNota(nota)) {
+            if (!validaData(data)) {
                 resultado = "Favor inserir uma data válida";
                 return resultado;
             }
 
-            //CATEGORIA, INGREDIENTE E MEDIDA JÁ VÃO SER VALIDADOS ANTES, JÁ QUE É UM COMBOBOX DO QUE ESTÁ PRESENTE NO BD.
+            // Parse the date
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Date dataTeste;
+            try {
+                dataTeste = sdf.parse(data);
+            } catch (ParseException e) {
+                return "Formato de data inválido.";
+            }
 
-            // CHAMAR AQUI A FUNÇÃO DO DAO QUE VAI SER CRIADA PARA INSERIR A RECEITA NO DAO
-            // FAZER LÁ UM BOOLEAN PARA QUE RETORNE VERDADEIRO OU FALSO
+            Teste teste = new Teste();
+            teste.setCodReceita(Integer.parseInt(codReceita));
+            teste.setCpfDegustador(cpfDegust);
+            teste.setDataTeste(dataTeste);
+            teste.setNota(Integer.parseInt(nota));
 
-            // DAO DE INGREDIENTE/RECEITA PARA A QTDE E MEDIDA
-            // OS OUTROS DADOS VÃO PARA O DAO DE RECEITA
+            daoTeste daoteste = new daoTeste();
+            boolean inseridoComSucesso = daoteste.inserir(teste);
 
-            resultado = "Cadastro realizado com sucesso!";
+            if (inseridoComSucesso) {
+                resultado = "Cadastro realizado com sucesso!";
+            } else {
+                resultado = "Não foi possível realizar o cadastro.";
+            }
         }
 
         return resultado;
     }
-
-    public static boolean validaNome(String nome) {
-        return nome.matches("[a-zA-Z]+");
+    public static boolean validaData(String data) {
+        return data.matches("\\d{2}/\\d{2}/\\d{4}");
     }
-
-    public static String validaCPF(String cpf) {
-        String vCPF = "";
-        if(!cpf.matches("\\d{11}")) {
-            vCPF="Favor inserir um CPF válido.";
-        } else{ // criar um if aqui?
-            // O CPF PRECISA EXISTIR NO SISTEMA. ENTÃO AQUI CHAMAR UMA FUNÇÃO DO DAO QUE
-            // PROCURE O CPF ESPECÍFICO. SE DER FALSO, RETORNAR vCPF="Favor inserir um CPF cadastrado no sistema.";
-        } // INSERIR UM ÚLTIMO ELSE QUE RETORNA O vCPF="ok"
-        return vCPF;
-    }
-
     public static boolean validaNota(String salario) {
-        return salario.matches("[0-9,.]+");
+        return salario.matches("[0-9]+");
+    }
+
+    public static List<Teste> listatestes(){
+        List<Teste> testes = new ArrayList<>();
+        daoTeste daoteste = new daoTeste();
+        testes = daoteste.listarTodos();
+        return testes;
     }
 }

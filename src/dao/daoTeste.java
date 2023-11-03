@@ -9,8 +9,8 @@ import java.util.List;
 
 public class daoTeste {
 
-    public void inserir(Teste teste) {
-        String sql = "INSERT INTO teste (codReceita, cpfDegustador, dataTeste, nota) VALUES (?, ?, ?, ?)";
+    public static boolean inserir(Teste teste) {
+        String sql = "INSERT INTO teste (cod_receita, cpf_degustador, data_teste, nota) VALUES (?, ?, ?, ?)";
 
         try (Connection conexao = ConexaoBD.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
@@ -22,8 +22,11 @@ public class daoTeste {
 
             stmt.executeUpdate();
 
+            return true;
+
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -37,9 +40,9 @@ public class daoTeste {
 
             while (rs.next()) {
                 Teste teste = new Teste();
-                teste.setCodReceita(rs.getInt("codReceita"));
-                teste.setCpfDegustador(rs.getString("cpfDegustador"));
-                teste.setDataTeste(rs.getDate("dataTeste"));
+                teste.setCodReceita(rs.getInt("cod_receita"));
+                teste.setCpfDegustador(rs.getString("cpf_degustador"));
+                teste.setDataTeste(rs.getDate("data_teste"));
                 teste.setNota(rs.getInt("nota"));
                 testes.add(teste);
             }

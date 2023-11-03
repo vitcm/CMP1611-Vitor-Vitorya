@@ -1,11 +1,15 @@
 package telas;
 
-import controle.TelaCadLivroControle;
+import controle.*;
+import model.Cozinheiro;
+import model.Degustador;
+import model.Receita;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class TelaTeste {
     public static void areaTeste() {
@@ -22,13 +26,23 @@ public class TelaTeste {
         // Painel para os campos de texto
         JPanel camposPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
-        //input cpfDegust
-        JPanel nomePanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JLabel nomeLabel = new JLabel("CPF Degustador");
-        JTextField nomeInput = new JTextField(20);
-        nomePanel.add(nomeLabel);
-        nomePanel.add(nomeInput);
-        camposPanel.add(nomePanel);
+        //combobox degustadores
+        List<Degustador> degustadores = TelaAreaDegControle.listaDegustadores();
+        JComboBox<String> comboBoxDegustadores = new JComboBox<>();
+        for(Degustador degustador : degustadores) {
+            String opcao = degustador.getCpf() + "-" + degustador.getNome();
+            comboBoxDegustadores.addItem(opcao);
+        }
+        camposPanel.add(comboBoxDegustadores);
+
+        //combobox receitas
+        List<Receita> receitas = TelaCadReceitaLivroControle.listaReceitas();
+        JComboBox<String> comboboxReceitas = new JComboBox<>();
+        for(Receita receita : receitas) {
+            String opcao = receita.getCodReceita() + "-" + receita.getNomeReceita();
+            comboboxReceitas.addItem(opcao);
+        }
+        camposPanel.add(comboboxReceitas);
 
         //input data TEM COMO PEGAR A DATA DIRETO DO BD NO MOMENTO DO CADASTRO? SE SIM, MELHOR!
         JPanel dataPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -59,10 +73,17 @@ public class TelaTeste {
 
         cadastrarButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String nome = nomeInput.getText();
-                // String cpf = cpf
-                //String result = TelaCadLivroControle.cadastraLivro(nome, isbn);
-                //JOptionPane.showMessageDialog(frame, result);
+                String degustSelecionado = (String) comboBoxDegustadores.getSelectedItem();
+                String[] partesdegust = degustSelecionado.split("-");
+                String cpfDegust = partesdegust[0];
+                String receitaSelecionada = (String) comboboxReceitas.getSelectedItem();
+                String[] partesReceita = receitaSelecionada.split("-");
+                String codReceita = partesReceita[0];
+                String data = dataInput.getText();
+                String nota = notaInput.getText();
+
+                String result = TelaTesteControle.cadastraTeste(cpfDegust, codReceita, data, nota);
+                JOptionPane.showMessageDialog(frame, result);
             }
         });
 
