@@ -7,21 +7,15 @@ import java.util.List;
 
 public class TelaCadRestauranteControle {
 
-    private daoRestaurante dao = new daoRestaurante();
+    private static daoRestaurante dao = new daoRestaurante();
 
     public void inserirRestaurante(int codRest, String nomeRest) {
         Restaurante restaurante = new Restaurante(codRest, nomeRest);
         dao.inserir(restaurante);
     }
 
-    public List<Restaurante> getTodosRestaurantes() {
+    public static List<Restaurante> getTodosRestaurantes() {
         return dao.listarTodos();
     }
-
-
-
-
-
-
 
 }

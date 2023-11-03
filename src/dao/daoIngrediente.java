@@ -37,8 +37,8 @@ public class daoIngrediente {
 
             while (rs.next()) {
                 Ingrediente ingrediente = new Ingrediente();
-                ingrediente.setCodIngrediente(rs.getInt("codIngrediente"));
-                ingrediente.setNomeIngrediente(rs.getString("nomeIngrediente"));
+                ingrediente.setCodIngrediente(rs.getInt("cod_ingrediente"));
+                ingrediente.setNomeIngrediente(rs.getString("nome_ingrediente"));
                 ingrediente.setDescricao(rs.getString("descricao"));
                 ingredientes.add(ingrediente);
             }

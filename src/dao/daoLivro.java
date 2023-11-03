@@ -9,8 +9,8 @@ import java.util.List;
 
 public class daoLivro {
 
-    public void inserir(Livro livro) {
-        String sql = "INSERT INTO livros (ISBN, titulo, cpfEditor) VALUES (?, ?, ?)";
+    public boolean inserir(Livro livro) {
+        String sql = "INSERT INTO livros (ISBN, titulo, cpf_editor) VALUES (?, ?, ?)";
 
         try (Connection conexao = ConexaoBD.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
@@ -21,8 +21,11 @@ public class daoLivro {
 
             stmt.executeUpdate();
 
+            return true;
+
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

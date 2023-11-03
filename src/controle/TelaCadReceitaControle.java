@@ -1,23 +1,26 @@
 package controle;
 
+import dao.daoReceita;
+import model.Receita;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class TelaCadReceitaControle {
     public static String cadastraReceita( String cpf, String nome, String data,
-                                          String categoria, String ingrediente,
-                                          String quantidade, String medida) {
+                                          String categoria, String quantidade,
+                                          String medida, String modoDeFazer) {
         String resultado = "";
 
-        if(nome.isEmpty() || cpf.isEmpty() || data.isEmpty() || categoria.isEmpty() ||
-                ingrediente.isEmpty() || quantidade.isEmpty() || medida.isEmpty()) {
-            resultado = "Os campos cpf, nome, data, categoria, ingrediente, quantidade e medida são obrigatórios.";
+        if(nome.isEmpty() || cpf.isEmpty() || data.isEmpty() || categoria.isEmpty()
+                || quantidade.isEmpty() || medida.isEmpty()) {
+            resultado = "Os campos cpf, nome, data, categoria, quantidade e medida são obrigatórios.";
             return resultado;
         } else {
             if (!validaNome(nome)) {
                 resultado = "Favor inserir um nome válido";
                 return resultado;
-            }
-            String cpfvalidacao = validaCPF(cpf); //ARRUMAR A VALIDAÇÃO DO CPF
-            if(!cpfvalidacao.equals("ok")){
-                resultado = cpfvalidacao;
             }
             if (!validaData(data)) {
                 resultado = "Favor inserir uma data válida";
@@ -28,35 +31,39 @@ public class TelaCadReceitaControle {
                 return resultado;
             }
 
-            //CATEGORIA, INGREDIENTE E MEDIDA JÁ VÃO SER VALIDADOS ANTES, JÁ QUE É UM COMBOBOX DO QUE ESTÁ PRESENTE NO BD.
+            // Parse the date
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Date dataIngresso;
+            try {
+                dataIngresso = sdf.parse(data);
+            } catch (ParseException e) {
+                return "Formato de data inválido.";
+            }
 
-            // CHAMAR AQUI A FUNÇÃO DO DAO QUE VAI SER CRIADA PARA INSERIR A RECEITA NO DAO
-            // FAZER LÁ UM BOOLEAN PARA QUE RETORNE VERDADEIRO OU FALSO
+            Receita receita = new Receita();
+            receita.setNomeReceita(nome);
+            receita.setCodCozinheiro(cpf);
+            receita.setCodCategoria(Integer.parseInt(categoria));
+            receita.setDataInventada(dataIngresso);
+            receita.setDescricaoPreparacao(modoDeFazer);
+            receita.setNumPorcoes(Integer.parseInt(quantidade));
 
-            // DAO DE INGREDIENTE/RECEITA PARA A QTDE E MEDIDA
-            // OS OUTROS DADOS VÃO PARA O DAO DE RECEITA
+            daoReceita daoreceita = new daoReceita();
+            boolean inseridoComSucesso = daoreceita.inserir(receita);
 
-            resultado = "Cadastro realizado com sucesso!";
+            if (inseridoComSucesso) {
+                resultado = "Cadastro realizado com sucesso!";
+            } else {
+                resultado = "Não foi possível realizar o cadastro.";
+            }
         }
 
         return resultado;
     }
 
     public static boolean validaNome(String nome) {
-        return nome.matches("[a-zA-Z]+");
+        return nome.matches("[a-zA-Z ]+");
     }
-
-    public static String validaCPF(String cpf) {
-        String vCPF = "";
-        if(!cpf.matches("\\d{11}")) {
-            vCPF="Favor inserir um CPF válido.";
-        } else{ // criar um if aqui?
-            // O CPF PRECISA EXISTIR NO SISTEMA. ENTÃO AQUI CHAMAR UMA FUNÇÃO DO DAO QUE
-            // PROCURE O CPF ESPECÍFICO. SE DER FALSO, RETORNAR vCPF="Favor inserir um CPF cadastrado no sistema.";
-        } // INSERIR UM ÚLTIMO ELSE QUE RETORNA O vCPF="ok"
-        return vCPF;
-    }
-
 
     public static boolean validaData(String data) {
         return data.matches("\\d{2}/\\d{2}/\\d{4}");

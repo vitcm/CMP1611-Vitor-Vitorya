@@ -35,8 +35,8 @@ public class daoCategoria {
 
             while (rs.next()) {
                 Categoria categoria = new Categoria();
-                categoria.setCodCategoria(rs.getInt("codCategoria"));
-                categoria.setDescCategoria(rs.getString("descCategoria"));
+                categoria.setCodCategoria(rs.getInt("cod_categoria"));
+                categoria.setDescCategoria(rs.getString("desc_categoria"));
                 categorias.add(categoria);
             }
 

@@ -1,7 +1,15 @@
 package telas;
 
+import controle.TelaCadLivroControle;
+import controle.TelaCadReceitaLivroControle;
+import model.Livro;
+import model.Receita;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 public class TelaCadReceitaLivro {
     public static void areaCadReceitaLivro() {
@@ -19,14 +27,22 @@ public class TelaCadReceitaLivro {
         JPanel camposPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
         //combobox receitas
-        String[] opcoesReceitas = {"Cod receita 1 - Nome receita 1", "Cod receita 2 - Nome receita 2", "Cod receita 3 - Nome receita 3"};
-        JComboBox<String> comboBoxReceitas = new JComboBox<>(opcoesReceitas);
-        camposPanel.add(comboBoxReceitas);
+        List<Receita> receitas = TelaCadReceitaLivroControle.listaReceitas();
+        JComboBox<String> comboboxReceitas = new JComboBox<>();
+        for(Receita receita : receitas) {
+            String opcao = receita.getCodReceita() + "-" + receita.getNomeReceita();
+            comboboxReceitas.addItem(opcao);
+        }
+        camposPanel.add(comboboxReceitas);
 
-        //combobox ISBN
-        String[] opcoesISBN = {"ISBN 1 - Nome livro 1", "ISBN 2 - Nome livro 2", "ISBN 3 - Nome livro 3"};
-        JComboBox<String> comboBoxLivros = new JComboBox<>(opcoesISBN);
-        camposPanel.add(comboBoxLivros);
+        //combobox Livros
+        List<Livro> livros = TelaCadReceitaLivroControle.listaLivros();
+        JComboBox<String> comboboxLivros = new JComboBox<>();
+        for(Livro livro : livros) {
+            String opcao = livro.getISBN() +"-" + livro.getTitulo();
+            comboboxLivros.addItem(opcao);
+        }
+        camposPanel.add(comboboxLivros);
 
         JPanel botoesPanel = new JPanel(new BorderLayout());
         // Botão Cadastrar
@@ -35,6 +51,19 @@ public class TelaCadReceitaLivro {
         cadastrarButton.setForeground(Color.WHITE);
         cadastrarButton.setFont(new Font("Arial", Font.BOLD, 16));
         cadastrarButton.setPreferredSize(new Dimension(400, 50));
+
+        cadastrarButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String receitaSelecionada = (String) comboboxReceitas.getSelectedItem();
+                String[] partesReceita = receitaSelecionada.split("-");
+                String codReceita = partesReceita[0];
+                String livroSelecionado = (String) comboboxLivros.getSelectedItem();
+                String[] partesLivro = livroSelecionado.split("-");
+                String isbn = partesLivro[0];
+                String result = TelaCadReceitaLivroControle.cadastraReceitaEmLivro(codReceita, isbn);
+                JOptionPane.showMessageDialog(frame, result);
+            }
+        });
 
         botoesPanel.add(cadastrarButton, BorderLayout.SOUTH);
 

@@ -1,6 +1,11 @@
 package controle;
 import dao.daoIngrediente;
+import dao.daoLivro;
 import model.Ingrediente;
+import model.Livro;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TelaCadIngredienteControle {
 
@@ -37,4 +42,11 @@ public class TelaCadIngredienteControle {
     public static boolean validaNome(String nome) {
         return nome.matches("[a-zA-Z ]+");  // Updated regex to include spaces for names with multiple words.
     }
+    public static List<Ingrediente> listaIngredientes() {
+        List<Ingrediente> ingredientes = new ArrayList<>();
+        daoIngrediente daoingrediente = new daoIngrediente();
+        ingredientes = daoingrediente.listarTodos();
+        return ingredientes;
+    }
+
 }

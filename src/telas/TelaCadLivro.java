@@ -2,17 +2,20 @@ package telas;
 
 import controle.TelaCadLivroControle;
 import controle.TelaCadastroFuncControle;
+import model.Editor;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TelaCadLivro {
     public static void areaCadLivro() {
         JFrame frame = new JFrame("CADASTRO LIVRO");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(500, 200);
+        frame.setSize(500, 300);
         frame.setLayout(new BorderLayout());
 
         // inserindo o título da tela
@@ -39,6 +42,15 @@ public class TelaCadLivro {
         isbnPanel.add(isbnInput);
         camposPanel.add(isbnPanel);
 
+        //combobox editores
+        List<Editor> editores = TelaCadLivroControle.listaEditores();
+        JComboBox<String> comboboxEditores = new JComboBox<>();
+        for (Editor editor : editores) {
+            String opcao = editor.getCpf() + "-" + editor.getNome();
+            comboboxEditores.addItem(opcao);
+        }
+        camposPanel.add(comboboxEditores);
+
         JPanel botoesPanel = new JPanel(new BorderLayout());
         // Botão Cadastrar
         JButton cadastrarButton = new JButton("CADASTRAR");
@@ -50,7 +62,10 @@ public class TelaCadLivro {
             public void actionPerformed(ActionEvent e) {
                 String nome = nomeInput.getText();
                 String isbn = isbnInput.getText();
-                String result = TelaCadLivroControle.cadastraLivro(nome, isbn);
+                String editorSelecionado = (String) comboboxEditores.getSelectedItem();
+                String[] partes = editorSelecionado.split("-");
+                String cpf = partes[0];
+                String result = TelaCadLivroControle.cadastraLivro(nome, isbn, cpf);
                 JOptionPane.showMessageDialog(frame, result);
             }
         });

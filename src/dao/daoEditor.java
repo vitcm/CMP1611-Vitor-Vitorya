@@ -71,7 +71,7 @@ public class daoEditor {
         }
     }
 
-    public void excluir(String cpf) {
+  /*  public void excluir(String cpf) {
         String sql = "DELETE FROM editores WHERE cpf = ?";
 
         try (Connection conexao = ConexaoBD.conectar();
@@ -84,5 +84,5 @@ public class daoEditor {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

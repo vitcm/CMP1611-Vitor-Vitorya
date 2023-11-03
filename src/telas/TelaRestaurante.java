@@ -46,7 +46,7 @@ public class TelaRestaurante {
         botaoCozRest.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Similarmente aqui, quando a ação de cadastro terminar, atualize a lista.
+                TelaCadCozRest.areaCadCozRest();
             }
         });
         botoesPanel.add(botaoCozRest);

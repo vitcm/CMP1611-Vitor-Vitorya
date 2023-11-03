@@ -1,19 +1,25 @@
 package telas;
 
+import controle.TelaCadCategoriasControle;
+import controle.TelaCadIngredienteControle;
 import controle.TelaCadReceitaControle;
 import controle.TelaCadastroFuncControle;
+import model.Categoria;
+import model.Cozinheiro;
+import model.Ingrediente;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 public class TelaCadReceita {
     public static void areaCadReceita() {
         JFrame frame = new JFrame("CADASTRO RECEITA");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(600, 800);
+        frame.setSize(700, 800);
 
         //criação da grid para distribuição dos componentes da tela
         JPanel panel = new JPanel(new GridBagLayout());
@@ -32,13 +38,19 @@ public class TelaCadReceita {
         panel.add(tituloLabel, gbc);
 
         //cpf do cozinheiro
-        JLabel cpfLabel = new JLabel("CPF do Cozinheiro:");
-        JTextField cpfInput = new JTextField(20);
+        JLabel cpfLabel = new JLabel("Cozinheiro:");
+        //combobox cozinheiros
+        List<Cozinheiro> cozinheiros = TelaCadastroFuncControle.listaCozinheiros();
+        JComboBox<String> comboBoxCozinheiros = new JComboBox<>();
+        for(Cozinheiro cozinheiro : cozinheiros) {
+            String opcao = cozinheiro.getCpf() + "-" + cozinheiro.getNome();
+            comboBoxCozinheiros.addItem(opcao);
+        }
         gbc.gridx = 0;
         gbc.gridy = 1;
         panel.add(cpfLabel, gbc);
         gbc.gridx = 1;
-        panel.add(cpfInput, gbc);
+        panel.add(comboBoxCozinheiros, gbc);
 
         //input nome
         JLabel nomeLabel = new JLabel("Nome receita:");
@@ -60,8 +72,12 @@ public class TelaCadReceita {
 
         // DROPDOWN COM UM STRING DE CATEGORIAS
         JLabel categoriaLabel = new JLabel("Categoria:");
-        String[] categorias = {"Categoria 1", "Categoria 2", "Categoria 3"};
-        JComboBox<String> categoriaDropdown = new JComboBox<>(categorias);
+        List<Categoria> categorias = TelaCadCategoriasControle.listaCategorias();
+        JComboBox<String> categoriaDropdown = new JComboBox<>();
+        for(Categoria categoria : categorias) {
+            String opcao = categoria.getCodCategoria()+"-"+categoria.getDescCategoria();
+            categoriaDropdown.addItem(opcao);
+        }
         gbc.gridx = 0;
         gbc.gridy = 4;
         panel.add(categoriaLabel, gbc);
@@ -70,8 +86,12 @@ public class TelaCadReceita {
 
         // Dropdown Ingredientes
         JLabel ingredienteLabel = new JLabel("Ingrediente:");
-        String[] ingredientes = {"Ingrediente 1", "Ingrediente 2", "Ingrediente 3"};
-        JComboBox<String> ingredienteDropdown = new JComboBox<>(ingredientes);
+        List<Ingrediente> ingredientes = TelaCadIngredienteControle.listaIngredientes();
+        JComboBox<String> ingredienteDropdown = new JComboBox<>();
+        for(Ingrediente ingrediente : ingredientes) {
+            String opcao = ingrediente.getCodIngrediente() + "-" + ingrediente.getNomeIngrediente();
+            ingredienteDropdown.addItem(opcao);
+        }
 
         // Input Quantidade
         JLabel quantidadeLabel = new JLabel("Quantidade:");
@@ -79,7 +99,7 @@ public class TelaCadReceita {
 
         // Dropdown Medida
         JLabel medidaLabel = new JLabel("Medida:");
-        String[] medidas = {"KG", "ML", "G"};
+        String[] medidas = {"KG", "ML", "G", "Colher(sopa)", "Colher(chá)", "Xícara"};
         JComboBox<String> medidaDropdown = new JComboBox<>(medidas);
 
         // Botão Adição
@@ -154,18 +174,33 @@ public class TelaCadReceita {
 
         cadastrarButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String cpf = cpfInput.getText();
+                String cozinheiroSelecionado = (String) comboBoxCozinheiros.getSelectedItem();
+                String[] partesCoz = cozinheiroSelecionado.split("-");
+                String cpfCoz = partesCoz[0];
                 String nome = nomeInput.getText();
                 String data = dataInput.getText();
                 String categoria = (String) categoriaDropdown.getSelectedItem();
+                String[] partesCat = categoria.split("-");
+                String codCat = partesCat[0];
                 String ingrediente = (String) ingredienteDropdown.getSelectedItem();
+                String[] partesIng = ingrediente.split("-");
+                String codIng = partesIng[0];
                 String quantidade = quantidadeInput.getText();
                 String medida = (String) medidaDropdown.getSelectedItem();
+                String modoDeFazer = modoDeFazerTextArea.getText();
 
 
-                String result = TelaCadReceitaControle.cadastraReceita(cpf, nome, data, categoria,
-                        ingrediente, quantidade, medida);
+                String result = TelaCadReceitaControle.cadastraReceita(cpfCoz, nome, data, codCat,
+                         quantidade, medida, modoDeFazer);
                 JOptionPane.showMessageDialog(frame, result);
+
+                DefaultTableModel model = (DefaultTableModel) tabelaIngredientes.getModel();
+                int rowCount = model.getRowCount();
+                for (int i = 0; i < rowCount; i++) {
+                    String ingredienteRec = (String) model.getValueAt(i, 0);
+                    String quantidadeIng = (String) model.getValueAt(i, 1);
+                    String medidaIng = (String) model.getValueAt(i, 2);
+                }
             }
         });
 

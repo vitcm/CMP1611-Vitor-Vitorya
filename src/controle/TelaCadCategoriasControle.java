@@ -1,7 +1,12 @@
 package controle;
 
 import dao.daoCategoria;
+import dao.daoLivro;
 import model.Categoria;
+import model.Livro;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TelaCadCategoriasControle {
 
@@ -32,6 +37,13 @@ public class TelaCadCategoriasControle {
     }
     
     public static boolean validaNome(String nome) {
-        return nome.matches("[a-zA-Z]+");
+        return nome.matches("[a-zA-Z ]+");
+    }
+
+    public static List<Categoria> listaCategorias() {
+        List<Categoria> categorias = new ArrayList<>();
+        daoCategoria daocategoria = new daoCategoria();
+        categorias = daocategoria.listarTodos();
+        return categorias;
     }
 }

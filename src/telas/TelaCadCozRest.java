@@ -1,11 +1,16 @@
 package telas;
 
 import controle.TelaCadCozRestControle;
+import controle.TelaCadRestauranteControle;
+import controle.TelaCadastroFuncControle;
+import model.Cozinheiro;
+import model.Restaurante;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class TelaCadCozRest {
 
@@ -24,16 +29,31 @@ public class TelaCadCozRest {
         JPanel camposPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
         //combobox cozinheiros
-        // PEGAR OS DADOS PARA A STRING OPCOESCOZINHEIROS LÁ NO BANCO DE DADOS
-        String[] opcoesCozinheiros = {"CPF 1 - Cozinheiro 1", "CPF 2 - Cozinheiro 2", "CPF 3 - Cozinheiro 3"};
-        JComboBox<String> comboBoxCozinheiros = new JComboBox<>(opcoesCozinheiros);
+        List<Cozinheiro> cozinheiros = TelaCadastroFuncControle.listaCozinheiros();
+        JComboBox<String> comboBoxCozinheiros = new JComboBox<>();
+        for(Cozinheiro cozinheiro : cozinheiros) {
+            String opcao = cozinheiro.getCpf() + "-" + cozinheiro.getNome();
+            comboBoxCozinheiros.addItem(opcao);
+        }
         camposPanel.add(comboBoxCozinheiros);
 
         //combobox restaurantes
-        // PEGAR OS DADOS PARA A STRING OPCOESRESTAURANTES LÁ NO BANCO DE DADOS
-        String[] opcoesRestaurantes = {"Cod 1 - Restaurante 1", "Cod 2 - Restaurante 2", "Cod 3 - Restaurante 3"};
-        JComboBox<String> comboBoxRestaurantes = new JComboBox<>(opcoesRestaurantes);
+        List<Restaurante> restaurantes = TelaCadRestauranteControle.getTodosRestaurantes();
+        JComboBox<String> comboBoxRestaurantes = new JComboBox<>();
+        for(Restaurante restaurante : restaurantes) {
+            String opcao = restaurante.getCodRest() + "-" + restaurante.getNomeRest();
+            comboBoxRestaurantes.addItem(opcao);
+        }
         camposPanel.add(comboBoxRestaurantes);
+
+        //input data TEM COMO PEGAR A DATA DIRETO DO BD NO MOMENTO DO CADASTRO? SE SIM, MELHOR!
+        JPanel dataPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JLabel dataLabel = new JLabel("Data");
+        JTextField dataInput = new JTextField(20);
+        dataPanel.add(dataLabel);
+        dataPanel.add(dataInput);
+        camposPanel.add(dataPanel);
+
 
         JPanel botoesPanel = new JPanel(new BorderLayout());
         // Botão Cadastrar
@@ -48,8 +68,14 @@ public class TelaCadCozRest {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String cozinheiroSelecionado = (String) comboBoxCozinheiros.getSelectedItem();
+                String[] partesCoz = cozinheiroSelecionado.split("-");
+                String cpfCoz = partesCoz[0];
                 String restauranteSelecionado = (String) comboBoxRestaurantes.getSelectedItem();
-                TelaCadCozRestControle.cadastraCozinheiroEmRestaurante(cozinheiroSelecionado, restauranteSelecionado);
+                String[] partesRest = restauranteSelecionado.split("-");
+                String codRest = partesRest[0];
+                String data = dataInput.getText();
+                String result = TelaCadCozRestControle.cadastraCozinheiroEmRestaurante(cpfCoz, codRest, data);
+                JOptionPane.showMessageDialog(frame, result);
             }
         });
 

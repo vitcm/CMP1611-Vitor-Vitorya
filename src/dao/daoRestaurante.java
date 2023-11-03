@@ -24,7 +24,7 @@ public class daoRestaurante {
         }
     }
 
-    public List<Restaurante> listarTodos() {
+    public static List<Restaurante> listarTodos() {
         List<Restaurante> restaurantes = new ArrayList<>();
         String sql = "SELECT * FROM restaurante";
 

@@ -9,24 +9,26 @@ import java.util.List;
 
 public class daoReceita {
 
-    public void inserir(Receita receita) {
-        String sql = "INSERT INTO receitas (codReceita, nomeReceita, dataInventada, codCozinheiro, codCategoria, descricaoPreparacao, numPorcoes) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public boolean inserir(Receita receita) {
+        String sql = "INSERT INTO receitas (nome_receita, data_inventada, cod_cozinheiro, cod_categoria, descricao_preparacao, num_porcoes) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conexao = ConexaoBD.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
-            stmt.setInt(1, receita.getCodReceita());
-            stmt.setString(2, receita.getNomeReceita());
-            stmt.setDate(3, new Date (receita.getDataInventada().getTime()));
-            stmt.setString(4, receita.getCodCozinheiro());
-            stmt.setInt(5, receita.getCodCategoria());
-            stmt.setString(6, receita.getDescricaoPreparacao());
-            stmt.setInt(7, receita.getNumPorcoes());
+            stmt.setString(1, receita.getNomeReceita());
+            stmt.setDate(2, new Date (receita.getDataInventada().getTime()));
+            stmt.setString(3, receita.getCodCozinheiro());
+            stmt.setInt(4, receita.getCodCategoria());
+            stmt.setString(5, receita.getDescricaoPreparacao());
+            stmt.setInt(6, receita.getNumPorcoes());
 
             stmt.executeUpdate();
 
+            return true;
+
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

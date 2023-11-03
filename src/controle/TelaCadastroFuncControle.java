@@ -3,6 +3,7 @@ package controle;
 import dao.daoCozinheiro;
 import dao.daoDegustador;
 import dao.daoEditor;
+import dao.daoLivro;
 import model.Cozinheiro;
 import model.Degustador;
 import model.Editor;
@@ -10,7 +11,9 @@ import model.Editor;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class TelaCadastroFuncControle {
     public static String cadastraFuncionario(String nome, String cpf, String data, String salario, String cargo, String nomeFantasia) {
@@ -81,7 +84,7 @@ public class TelaCadastroFuncControle {
     }
 
     public static boolean validaNome(String nome) {
-        return nome.matches("[a-zA-Z]+");
+        return nome.matches("[a-zA-Z ]+");
     }
 
     public static boolean validaCPF(String cpf) {
@@ -94,5 +97,12 @@ public class TelaCadastroFuncControle {
 
     public static boolean validaSalario(String salario) {
         return salario.matches("[0-9,.]+");
+    }
+
+    public static List<Cozinheiro> listaCozinheiros() {
+        List<Cozinheiro> cozinheiros = new ArrayList<>();
+        daoCozinheiro daocozinheiro = new daoCozinheiro();
+        cozinheiros = daocozinheiro.listarTodos();
+        return cozinheiros;
     }
 }
