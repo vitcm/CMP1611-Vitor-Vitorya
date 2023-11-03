@@ -31,4 +31,26 @@ public class daoReceitaLivro {
             return false;
         }
     }
+
+    public static List<String> obterReceitasPorISBN(String isbn) {
+        List<String> listaReceitas  = new ArrayList<>();
+        String sql = "SELECT r.nome_receita " +
+                "FROM receitas r " +
+                "JOIN receita_livro rl ON r.cod_receita = rl.cod_receita " +
+                "WHERE rl.isbn = ?";
+
+        try (Connection conexao = ConexaoBD.conectar();
+             PreparedStatement stmt = conexao.prepareStatement(sql)) {
+            stmt.setString(1, isbn);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String nomeReceita = rs.getString("nome_receita");
+                listaReceitas.add(nomeReceita);
+            }
+        } catch (SQLException e) {
+        e.printStackTrace();
+        }
+        return listaReceitas;
+    }
 }

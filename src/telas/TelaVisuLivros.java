@@ -1,16 +1,19 @@
 package telas;
 
+import controle.TelaTesteControle;
+import controle.TelaVisuLivrosControle;
+import model.Livro;
+import model.Teste;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class TelaVisuLivros {
 
-    private List<String> listaLivros;
-
-    public TelaVisuLivros(List<String> listaLivros) {
-        this.listaLivros = listaLivros;
-    }
+    private static DefaultListModel<String> listModel;
 
     public void abreTelaLivros() {
         JFrame frame = new JFrame("LIVROS");
@@ -23,25 +26,57 @@ public class TelaVisuLivros {
         tituloLabel.setFont(new Font("Arial",Font.BOLD, 20));
         frame.add(tituloLabel, BorderLayout.NORTH);
 
-        // Convertendo a lista para um array de strings
-        String[] livros = listaLivros.toArray(new String[0]);
+        JButton botaoAtualizar = new JButton("Atualizar Lista");
+        criaButton(botaoAtualizar);
+        botaoAtualizar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                atualizarListaDeLivros();
+            }
+        });
+        frame.add(botaoAtualizar);
 
-        JList<String> listLivros = new JList<>(livros);
-        listLivros.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        listLivros.addMouseListener(new java.awt.event.MouseAdapter() {
+        // Convertendo a lista para um array de strings
+        listModel = new DefaultListModel<>();
+        JList<String> listaLivros = new JList<>(listModel);
+        listaLivros.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        frame.add(new JScrollPane(listaLivros));
+
+        atualizarListaDeLivros();
+
+        listaLivros.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JList<String> list = (JList<String>) evt.getSource();
                 if (evt.getClickCount() == 2) {
-                    // String receitaSelecionada = list.getSelectedValue();
-                    TelaLivro.areaLivro();
+                    String selectedItem = listaLivros.getSelectedValue();
+                    if (selectedItem != null) {
+                        String[] parts = selectedItem.split(" - ");
+                        String isbn = parts[0];
+                        TelaLivro.areaLivro(isbn);
+                    }
                 }
             }
         });
 
-        frame.add(new JScrollPane(listLivros));
-
         // Exibir a tela
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+
+    public static void atualizarListaDeLivros() {
+        List<Livro> listaDeLivros = TelaVisuLivrosControle.listaLivros();
+
+        listModel.clear(); // Limpa o modelo da lista antes de adicionar os novos elementos
+        for (Livro livro : listaDeLivros) {
+            String item = livro.getISBN() +" - " + livro.getTitulo();
+            listModel.addElement(item);
+        }
+    }
+
+    public static void criaButton(JButton botao) {
+        Color minhaCor = new Color(150, 150, 150);
+        botao.setBackground(minhaCor);
+        botao.setForeground(Color.WHITE);
+        botao.setFont(new Font("Arial", Font.BOLD, 16));
+        botao.setPreferredSize(new Dimension(400, 50));
     }
 }

@@ -101,7 +101,7 @@ public class Main {
                     titulos.add(livro.getTitulo());
                 }
 
-                TelaVisuLivros tela = new TelaVisuLivros(titulos);
+                TelaVisuLivros tela = new TelaVisuLivros();
                 tela.abreTelaLivros();
             }
         });

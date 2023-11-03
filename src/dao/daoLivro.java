@@ -29,7 +29,7 @@ public class daoLivro {
         }
     }
 
-    public List<Livro> listarTodos() {
+    public static List<Livro> listarTodos() {
         List<Livro> livros = new ArrayList<>();
         String sql = "SELECT * FROM livros";
 
