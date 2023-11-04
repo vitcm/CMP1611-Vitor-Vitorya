@@ -138,8 +138,12 @@ public class daoReceita {
     }
 
     public List<String> buscarIngredientesPorIdReceita(int codReceita) {
-        List<String> ingredientes = new ArrayList<>();
-        String sql = "SELECT descricao FROM ingredientes_receita WHERE cod_receita = ?";
+        List<String> ingredientesDetalhes = new ArrayList<>();
+        // Adjust the SQL to join the 'ingredientes_receita' table with 'ingredientes' table
+        String sql = "SELECT ir.cod_ingrediente, i.nome_ingrediente, i.descricao " +
+                "FROM ingredientes_receita ir " +
+                "JOIN ingredientes i ON ir.cod_ingrediente = i.cod_ingrediente " +
+                "WHERE ir.cod_receita = ?";
         try (Connection conexao = ConexaoBD.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
@@ -147,11 +151,14 @@ public class daoReceita {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                ingredientes.add(rs.getString("descricao"));
+                // Construct a string with the ingredient details
+                String detalheIngrediente =" Nome: " + rs.getString("nome_ingrediente") +
+                        ", Descrição: " + rs.getString("descricao");
+                ingredientesDetalhes.add(detalheIngrediente);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return ingredientes;
+        return ingredientesDetalhes;
     }
 }

@@ -18,11 +18,10 @@ public class TelaReceita {
             return;
         }
 
-        // Buscar nome do cozinheiro e outros detalhes no BD
+        // Buscar nome do cozinheiro e outros detalhes
         String nomeCozinheiro = dao.buscarNomeCozinheiro(receita.getCodCozinheiro());
         String modoPreparo = receita.getDescricaoPreparacao();
 
-        // Supondo que você tenha um método que retorne os ingredientes em uma lista de strings
         List<String> ingredientes = dao.buscarIngredientesPorIdReceita(codReceita);
 
         JFrame frame = new JFrame(receita.getNomeReceita());
@@ -30,7 +29,6 @@ public class TelaReceita {
         frame.setSize(800, 600);
         frame.setLayout(new BorderLayout());
 
-        // Inserir o título da tela com o nome do cozinheiro
         JLabel tituloLabel = new JLabel(receita.getNomeReceita() + " - " + nomeCozinheiro, SwingConstants.CENTER);
         tituloLabel.setFont(new Font("Arial", Font.BOLD, 20));
         frame.add(tituloLabel, BorderLayout.NORTH);
