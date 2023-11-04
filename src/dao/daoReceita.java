@@ -139,8 +139,8 @@ public class daoReceita {
 
     public List<String> buscarIngredientesPorIdReceita(int codReceita) {
         List<String> ingredientesDetalhes = new ArrayList<>();
-        // Adjust the SQL to join the 'ingredientes_receita' table with 'ingredientes' table
-        String sql = "SELECT ir.cod_ingrediente, i.nome_ingrediente, i.descricao " +
+        // Adjust the SQL to include 'quantidade' and 'medida' in the selection
+        String sql = "SELECT ir.cod_ingrediente, ir.quantidade, ir.medida, i.nome_ingrediente, i.descricao " +
                 "FROM ingredientes_receita ir " +
                 "JOIN ingredientes i ON ir.cod_ingrediente = i.cod_ingrediente " +
                 "WHERE ir.cod_receita = ?";
@@ -151,8 +151,11 @@ public class daoReceita {
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                // Construct a string with the ingredient details
-                String detalheIngrediente =" Nome: " + rs.getString("nome_ingrediente") +
+                // Construct a string with the ingredient details, including quantity and measure
+                String detalheIngrediente = "Código: " + rs.getInt("cod_ingrediente") +
+                        ", Nome: " + rs.getString("nome_ingrediente") +
+                        ", Quantidade: " + rs.getInt("quantidade") + // Assuming 'quantidade' is an integer
+                        ", Medida: " + rs.getString("medida") +
                         ", Descrição: " + rs.getString("descricao");
                 ingredientesDetalhes.add(detalheIngrediente);
             }
