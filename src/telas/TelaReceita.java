@@ -8,6 +8,9 @@ import java.awt.*;
 import java.util.List;
 
 public class TelaReceita {
+
+
+
     public static void areaReceita(int codReceita) {
         daoReceita dao = new daoReceita();
         Receita receita = dao.buscarPorId(codReceita);

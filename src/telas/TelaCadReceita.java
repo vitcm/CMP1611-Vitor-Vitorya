@@ -7,15 +7,20 @@ import controle.TelaCadastroFuncControle;
 import model.Categoria;
 import model.Cozinheiro;
 import model.Ingrediente;
+import model.IngredientesReceita;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 public class TelaCadReceita {
+
+    private static List<IngredientesReceita> ingredientesReceitaList = new ArrayList<>();
+
     public static void areaCadReceita() {
         JFrame frame = new JFrame("CADASTRO RECEITA");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -182,25 +187,33 @@ public class TelaCadReceita {
                 String categoria = (String) categoriaDropdown.getSelectedItem();
                 String[] partesCat = categoria.split("-");
                 String codCat = partesCat[0];
-                String ingrediente = (String) ingredienteDropdown.getSelectedItem();
-                String[] partesIng = ingrediente.split("-");
-                String codIng = partesIng[0];
                 String quantidade = quantidadeInput.getText();
                 String medida = (String) medidaDropdown.getSelectedItem();
                 String modoDeFazer = modoDeFazerTextArea.getText();
 
-
-                String result = TelaCadReceitaControle.cadastraReceita(cpfCoz, nome, data, codCat,
-                         quantidade, medida, modoDeFazer);
-                JOptionPane.showMessageDialog(frame, result);
-
                 DefaultTableModel model = (DefaultTableModel) tabelaIngredientes.getModel();
                 int rowCount = model.getRowCount();
+
+                StringBuilder ingredientesString = new StringBuilder();
+
                 for (int i = 0; i < rowCount; i++) {
                     String ingredienteRec = (String) model.getValueAt(i, 0);
                     String quantidadeIng = (String) model.getValueAt(i, 1);
                     String medidaIng = (String) model.getValueAt(i, 2);
+
+                    ingredientesString.append(ingredienteRec)
+                            .append("-")
+                            .append(quantidadeIng)
+                            .append("-")
+                            .append(medidaIng)
+                            .append(";");
                 }
+
+                String ingredientesFinal = ingredientesString.toString();
+
+                String result = TelaCadReceitaControle.cadastraReceitaEIngredientes(cpfCoz, nome, data, codCat,
+                        quantidade, medida, modoDeFazer, ingredientesFinal);
+                JOptionPane.showMessageDialog(frame, result);
             }
         });
 

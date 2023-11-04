@@ -164,4 +164,21 @@ public class daoReceita {
         }
         return ingredientesDetalhes;
     }
+
+    public static int buscarCodReceitaPorNome(String nomeReceita) {
+        String sql = "SELECT cod_receita FROM receitas WHERE nome_receita = ?";
+        try (Connection conexao = ConexaoBD.conectar();
+             PreparedStatement stmt = conexao.prepareStatement(sql)) {
+
+            stmt.setString(1, nomeReceita);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("cod_receita");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }
