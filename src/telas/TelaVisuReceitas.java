@@ -5,7 +5,9 @@ import model.Receita;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TelaVisuReceitas {
     private static TelaVisuReceitasControle controle = new TelaVisuReceitasControle();
@@ -24,8 +26,12 @@ public class TelaVisuReceitas {
         // Lista de receitas
         List<Receita> receitasDoBD = controle.buscarTodasReceitas();
         DefaultListModel<String> listModel = new DefaultListModel<>();
+        Map<String, Integer> receitaIdMap = new HashMap<>(); // Mapa para associar a String com o ID da receita
+
         for (Receita r : receitasDoBD) {
-            listModel.addElement(r.getNomeReceita() + " - " + r.getCodCozinheiro());
+            String receitaString = r.getNomeReceita() + " - " + r.getCodCozinheiro();
+            listModel.addElement(receitaString);
+            receitaIdMap.put(receitaString, r.getCodReceita());
         }
 
         JList<String> listaReceitas = new JList<>(listModel);
@@ -34,8 +40,14 @@ public class TelaVisuReceitas {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 JList<String> list = (JList<String>) evt.getSource();
                 if (evt.getClickCount() == 2) {
-                    // Pode pegar informações da receita selecionada aqui
-                    TelaReceita.areaReceita();  // Se a tela de receita detalhada precisa de algum dado, passe como parâmetro.
+                    int index = list.locationToIndex(evt.getPoint());
+                    if (index >= 0) {
+                        String selectedValue = list.getModel().getElementAt(index);
+                        Integer receitaId = receitaIdMap.get(selectedValue);
+                        if (receitaId != null) {
+                            TelaReceita.areaReceita(receitaId);
+                        }
+                    }
                 }
             }
         });

@@ -94,4 +94,64 @@ public class daoReceita {
             e.printStackTrace();
         }
     }
+    public Receita buscarPorId(int codReceita) {
+        String sql = "SELECT * FROM receitas WHERE cod_receita = ?";
+        Receita receita = null;
+
+        try (Connection conexao = ConexaoBD.conectar();
+             PreparedStatement stmt = conexao.prepareStatement(sql)) {
+
+            stmt.setInt(1, codReceita);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                receita = new Receita();
+                receita.setCodReceita(rs.getInt("cod_receita"));
+                receita.setNomeReceita(rs.getString("nome_receita"));
+                receita.setDataInventada(rs.getDate("data_inventada"));
+                receita.setCodCozinheiro(rs.getString("cod_cozinheiro"));
+                receita.setCodCategoria(rs.getInt("cod_categoria"));
+                receita.setDescricaoPreparacao(rs.getString("descricao_preparacao"));
+                receita.setNumPorcoes(rs.getInt("num_porcoes"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return receita;
+    }
+    public String buscarNomeCozinheiro(String codCozinheiro) {
+        String sql = "SELECT nome FROM cozinheiros WHERE cpf = ?";
+        try (Connection conexao = ConexaoBD.conectar();
+             PreparedStatement stmt = conexao.prepareStatement(sql)) {
+
+            stmt.setString(1, codCozinheiro);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("nome");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "Cozinheiro não encontrado";
+    }
+
+    public List<String> buscarIngredientesPorIdReceita(int codReceita) {
+        List<String> ingredientes = new ArrayList<>();
+        String sql = "SELECT descricao FROM ingredientes_receita WHERE cod_receita = ?";
+        try (Connection conexao = ConexaoBD.conectar();
+             PreparedStatement stmt = conexao.prepareStatement(sql)) {
+
+            stmt.setInt(1, codReceita);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                ingredientes.add(rs.getString("descricao"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return ingredientes;
+    }
 }
