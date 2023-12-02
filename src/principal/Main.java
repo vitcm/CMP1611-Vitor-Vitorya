@@ -118,6 +118,42 @@ public class Main {
         });
         botoesPanel.add(botaoRestaurantes);
 
+        // botão para ver maiores cozinheiros
+        JButton botaoMaioresCozinheiros = new JButton("Maiores Cozinheiros");
+        criaButtonOutros(botaoMaioresCozinheiros);
+        botaoMaioresCozinheiros.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TelaMaioresCozinheiros tela = new TelaMaioresCozinheiros();
+                tela.abreTelaMaioresCozinheiros();
+            }
+        });
+        botoesPanel.add(botaoMaioresCozinheiros);
+
+        // botão para área de restaurante
+        JButton botaoReceitaPorCategoria = new JButton("Área receitas por categorias");
+        criaButtonProfissionais(botaoReceitaPorCategoria);
+        botaoReceitaPorCategoria.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TelaReceitaPorCategorias tela = new TelaReceitaPorCategorias();
+                tela.abreTelaReceitaPorCategoria();
+            }
+        });
+        botoesPanel.add(botaoReceitaPorCategoria);
+
+        // botão para ver maiores cozinheiros
+        JButton botaoDegustadorPorIngrediente = new JButton("Ingrediente por degustador");
+        criaButtonOutros(botaoDegustadorPorIngrediente);
+        botaoDegustadorPorIngrediente.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TelaDegustadorPorIngrediente tela = new TelaDegustadorPorIngrediente();
+                tela.abreTelaDegustadorPorIngrediente();
+            }
+        });
+        botoesPanel.add(botaoDegustadorPorIngrediente);
+
         // botão sair
         JButton sairButton = new JButton("Sair");
         criaButtonOutros(sairButton);
