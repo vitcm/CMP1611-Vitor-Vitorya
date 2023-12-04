@@ -7,6 +7,8 @@ public class Teste {
     private String cpfDegustador;
     private Date dataTeste;
     private int nota;
+    private String nomeTestador;
+    private String nomeReceita;
 
 
     public Teste() {}
@@ -48,5 +50,21 @@ public class Teste {
 
     public void setNota(int nota) {
         this.nota = nota;
+    }
+
+    public String getNomeTestador() {
+        return nomeTestador;
+    }
+
+    public void setNomeTestador(String nomeTestador) {
+        this.nomeTestador = nomeTestador;
+    }
+
+    public String getNomeReceita() {
+        return nomeReceita;
+    }
+
+    public void setNomeReceita(String nomeReceita) {
+        this.nomeReceita = nomeReceita;
     }
 }

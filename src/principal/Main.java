@@ -22,16 +22,13 @@ public class Main {
         frame.setSize(1000, 500);
         frame.setLayout(new BorderLayout());
 
-        // inserindo o título da tela
         JLabel tituloLabel = new JLabel("PUBLICAÇÃO DE RECEITAS", SwingConstants.CENTER);
         tituloLabel.setFont(new Font("Arial", Font.BOLD, 20));
         frame.add(tituloLabel, BorderLayout.NORTH);
 
-        // criando espaço central para os botões
         JPanel botoesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         frame.add(botoesPanel, BorderLayout.CENTER);
 
-        // botão para cozinheiro
         JButton botaoCoz = new JButton("Área cozinheiro");
         criaButtonProfissionais(botaoCoz);
         botaoCoz.addActionListener(new ActionListener() {
@@ -42,7 +39,6 @@ public class Main {
         });
         botoesPanel.add(botaoCoz);
 
-        // botão para cadastro de funcionarios
         JButton botaoCadastroFunc = new JButton("Cadastro Funcionario");
         criaButtonOutros(botaoCadastroFunc);
         botaoCadastroFunc.addActionListener(new ActionListener() {
@@ -53,7 +49,6 @@ public class Main {
         });
         botoesPanel.add(botaoCadastroFunc);
 
-        // botão para editor
         JButton botaoEditor = new JButton("Área editor");
         criaButtonProfissionais(botaoEditor);
         botaoEditor.addActionListener(new ActionListener() {
@@ -64,7 +59,6 @@ public class Main {
         });
         botoesPanel.add(botaoEditor);
 
-        // botão para visualizar receitas
         JButton botaoVisuReceitas = new JButton("Visualizar receitas");
         criaButtonOutros(botaoVisuReceitas);
         botaoVisuReceitas.addActionListener(new ActionListener() {
@@ -75,7 +69,6 @@ public class Main {
         });
         botoesPanel.add(botaoVisuReceitas);
 
-        // botão para degustador
         JButton botaoDegust = new JButton("Área degustador");
         criaButtonProfissionais(botaoDegust);
         botaoDegust.addActionListener(new ActionListener() {
@@ -86,7 +79,6 @@ public class Main {
         });
         botoesPanel.add(botaoDegust);
 
-        // botão para visulizar livros
         JButton botaoVisuLivros = new JButton("Visualizar livros");
         criaButtonOutros(botaoVisuLivros);
         botaoVisuLivros.addActionListener(new ActionListener() {
@@ -95,7 +87,6 @@ public class Main {
                 daoLivro newLivro = new daoLivro();
                 List<Livro> livrosList = newLivro.listarTodos();
 
-                // Convertendo a lista de Livro para uma lista de Strings (por exemplo, títulos)
                 List<String> titulos = new ArrayList<>();
                 for (Livro livro : livrosList) {
                     titulos.add(livro.getTitulo());
@@ -107,7 +98,6 @@ public class Main {
         });
         botoesPanel.add(botaoVisuLivros);
 
-        // botão para área de restaurante
         JButton botaoRestaurantes = new JButton("Área restaurante");
         criaButtonProfissionais(botaoRestaurantes);
         botaoRestaurantes.addActionListener(new ActionListener() {
@@ -118,7 +108,6 @@ public class Main {
         });
         botoesPanel.add(botaoRestaurantes);
 
-        // botão para ver maiores cozinheiros
         JButton botaoMaioresCozinheiros = new JButton("Maiores Cozinheiros");
         criaButtonOutros(botaoMaioresCozinheiros);
         botaoMaioresCozinheiros.addActionListener(new ActionListener() {
@@ -130,7 +119,6 @@ public class Main {
         });
         botoesPanel.add(botaoMaioresCozinheiros);
 
-        // botão para área de restaurante
         JButton botaoReceitaPorCategoria = new JButton("Área receitas por categorias");
         criaButtonProfissionais(botaoReceitaPorCategoria);
         botaoReceitaPorCategoria.addActionListener(new ActionListener() {
@@ -142,7 +130,6 @@ public class Main {
         });
         botoesPanel.add(botaoReceitaPorCategoria);
 
-        // botão para ver maiores cozinheiros
         JButton botaoDegustadorPorIngrediente = new JButton("Ingrediente por degustador");
         criaButtonOutros(botaoDegustadorPorIngrediente);
         botaoDegustadorPorIngrediente.addActionListener(new ActionListener() {
@@ -154,7 +141,6 @@ public class Main {
         });
         botoesPanel.add(botaoDegustadorPorIngrediente);
 
-        // botão sair
         JButton sairButton = new JButton("Sair");
         criaButtonOutros(sairButton);
         Color corSair = new Color(64, 95, 135);
@@ -167,14 +153,11 @@ public class Main {
         });
         botoesPanel.add(sairButton);
 
-        //coloca no centro da tela
         frame.setLocationRelativeTo(null);
 
-        // exibir a tela
         frame.setVisible(true);
     }
 
-    // cria layout para os buttons de área alguma coisa
     public static void criaButtonProfissionais(JButton botao) {
         Color minhaCor = new Color(150, 150, 150);
         botao.setBackground(minhaCor);
@@ -184,7 +167,6 @@ public class Main {
         botao.setPreferredSize(new Dimension(400, 50));
     }
 
-    // cria layout para os outros buttons
     public static void criaButtonOutros(JButton botao) {
         Color minhaCor = new Color(37, 61, 91);
         botao.setBackground(minhaCor);

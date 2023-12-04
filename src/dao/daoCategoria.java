@@ -2,6 +2,8 @@ package dao;
 
 import model.Categoria;
 import util.ConexaoBD;
+
+import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,5 +77,33 @@ public class daoCategoria {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static DefaultTableModel buscarReceitasPorCategoria() {
+        DefaultTableModel modelo = new DefaultTableModel(new String[]{"Código da categoria", "Descrição categoria", "Quantidade de receitas"}, 0);
+
+        String sql = "SELECT cat.cod_categoria, cat.desc_categoria, COUNT(rec.cod_receita) AS quantidade_receitas "
+                + "FROM categoria cat "
+                + "LEFT JOIN receitas rec ON cat.cod_categoria = rec.cod_categoria "
+                + "GROUP BY cat.cod_categoria "
+                + "ORDER BY quantidade_receitas ASC;";
+
+        try (Connection conexao = ConexaoBD.conectar();
+             PreparedStatement stmt = conexao.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Object[] linha = new Object[]{
+                        rs.getInt("cod_categoria"),
+                        rs.getString("desc_categoria"),
+                        rs.getInt("quantidade_receitas")
+                };
+                modelo.addRow(linha);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return modelo;
     }
 }

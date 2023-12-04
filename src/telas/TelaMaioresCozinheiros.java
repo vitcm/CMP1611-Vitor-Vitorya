@@ -1,8 +1,6 @@
 package telas;
 
-import controle.TelaVisuReceitasControle;
-import model.Receita;
-
+import controle.TelaMaioresCozinheirosControle;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -20,24 +18,13 @@ public class TelaMaioresCozinheiros {
         tituloLabel.setFont(new Font("Arial", Font.BOLD, 20));
         frame.add(tituloLabel, BorderLayout.NORTH);
 
-        // Cabeçalho da tabela
-        String[] colunas = {"Nome cozinheiro", "Nome fantasia", "CPF cozinheiros", "Quantidade de receitas criadas"};
-        DefaultTableModel modelo = new DefaultTableModel(colunas, 0);
+        // Cria uma instância do controle para buscar os dados dos maiores cozinheiros
+        TelaMaioresCozinheirosControle controle = new TelaMaioresCozinheirosControle();
 
-        // Linhas da tabela (estáticas -> FAZER RECEBER OS COMANDOS SQL)
-        // TEM QUE SER EM ORDEM CRESCENTE DE QTDE DE RECEITAS
-        String[][] dados = {
-                {"Cozinheiro1", "Fantasia1", "123.456.789-01", "10"},
-                {"Cozinheiro2", "Fantasia2", "987.654.321-01", "8"},
-                {"Cozinheiro3", "Fantasia3", "111.222.333-44", "15"},
-                {"Cozinheiro4", "Fantasia4", "555.666.777-88", "12"},
-                {"Cozinheiro5", "Fantasia5", "999.888.777-66", "9"}
-        };
+        // Obter o modelo da tabela preenchido com dados do banco de dados
+        DefaultTableModel modelo = controle.buscarMaioresCozinheirosModeloTabela();
 
-        for (String[] linha : dados) {
-            modelo.addRow(linha);
-        }
-
+        // Criar tabela com modelo
         JTable tabela = new JTable(modelo);
         JScrollPane scrollPane = new JScrollPane(tabela);
         frame.add(scrollPane, BorderLayout.CENTER);

@@ -2,6 +2,7 @@ package dao;
 
 import model.Cozinheiro;
 import util.ConexaoBD;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,4 +89,39 @@ public class daoCozinheiro {
             e.printStackTrace();
         }
     }
+
+    public List<Cozinheiro> buscarMaioresCozinheiros() {
+        List<Cozinheiro> cozinheiros = new ArrayList<>();
+        String sql = "SELECT c.cpf, c.nome, c.nome_fantasia, c.data_ingresso, c.salario, c.lista_restaurantes, COUNT(r.cod_receita) as quantidade_receitas "
+                + "FROM cozinheiros c "
+                + "LEFT JOIN receitas r ON c.cpf = r.cod_cozinheiro "
+                + "GROUP BY c.cpf "
+                + "ORDER BY quantidade_receitas DESC "
+                + "LIMIT 5";
+
+        try (Connection conexao = ConexaoBD.conectar();
+             PreparedStatement stmt = conexao.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Cozinheiro cozinheiro = new Cozinheiro();
+                cozinheiro.setCpf(rs.getString("cpf"));
+                cozinheiro.setNome(rs.getString("nome"));
+                cozinheiro.setDataIngresso(rs.getDate("data_ingresso"));
+                cozinheiro.setSalario(rs.getBigDecimal("salario"));
+                cozinheiro.setNomeFantasia(rs.getString("nome_fantasia"));
+                cozinheiro.setListaRestaurantes(rs.getString("lista_restaurantes"));
+                cozinheiro.setQuantidadeReceitas(rs.getInt("quantidade_receitas"));
+                cozinheiros.add(cozinheiro);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return cozinheiros;
+    }
+
+
+
 }

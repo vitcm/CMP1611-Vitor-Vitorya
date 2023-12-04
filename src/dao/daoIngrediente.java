@@ -27,7 +27,7 @@ public class daoIngrediente {
         return false;
     }
 
-    public List<Ingrediente> listarTodos() {
+    public static List<Ingrediente> listarTodos() {
         List<Ingrediente> ingredientes = new ArrayList<>();
         String sql = "SELECT * FROM ingredientes";
 

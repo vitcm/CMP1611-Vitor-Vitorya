@@ -10,6 +10,7 @@ public class Cozinheiro {
     private BigDecimal salario;
     private String nomeFantasia;
     private String listaRestaurantes;
+    private int quantidadeReceitas;
 
     public Cozinheiro() {}
 
@@ -67,5 +68,11 @@ public class Cozinheiro {
 
     public void setListaRestaurantes(String listaRestaurantes) {
         this.listaRestaurantes = listaRestaurantes;
+    }
+    public int getQuantidadeReceitas() {
+        return quantidadeReceitas;
+    }
+    public void setQuantidadeReceitas(int quantidadeReceitas) {
+        this.quantidadeReceitas = quantidadeReceitas;
     }
 }
